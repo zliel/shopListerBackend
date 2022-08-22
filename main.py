@@ -9,6 +9,7 @@ app = FastAPI()
 origins = ["http://localhost:3000"]
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["*"])
 
+
 @app.get("/scrape")
 def scrape_recipe(url: str):
     """This endpoint scrapes the ingredients from the linked recipe """
@@ -26,5 +27,6 @@ def scrape_recipe(url: str):
         name_text = name.text if name is not None else ""
 
         result_ingredients.append(f"{amount_text} {unit_text} {name_text}")
-    return {"ingredients": result_ingredients, "url": url}
 
+    # We send back the page.url because the JOC page autocompletes incomplete urls to the closest matching recipe
+    return {"ingredients": result_ingredients, "url": page.url}
