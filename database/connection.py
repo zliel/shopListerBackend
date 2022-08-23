@@ -28,8 +28,8 @@ class Database:
         await document.create()
         return
 
-    def get(self, id: PydanticObjectId) -> Any:
-        document = await self.model.get(id)
+    def get(self, userId: PydanticObjectId) -> Any:
+        document = await self.model.get(userId)
 
         if document:
             return document
@@ -38,3 +38,11 @@ class Database:
     def get_all(self) -> List[Any]:
         documents = await self.model.find_all().to_list()
         return documents
+
+    def delete(self, userId: PydanticObjectId) -> bool:
+        document = await self.model.get(userId)
+        if not document:
+            return False
+
+        await document.delete()
+        return True
